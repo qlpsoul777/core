@@ -1,0 +1,47 @@
+1、新建web项目后找不到src/main/java、src/main/test文件夹，新建时又提示已存在的问题?
+	右键项目properties--->java buid path--->切换到第三个选项卡libraries
+	--->编辑jre system library--->选择workspace default jre--->点击finish。
+
+2、如何将2.3的改为3.0?
+	a、在项目的.setting文件夹中编辑org.eclipse.wst.common.project.facet.core.xml文件
+	中找到如下内容：
+	<?xml version="1.0" encoding="UTF-8"?>
+	<faceted-project>
+	  <fixed facet="wst.jsdt.web"/>
+	  <installed facet="java" version="1.5"/>
+	  <installed facet="jst.web" version="2.3"/>
+	  <installed facet="wst.jsdt.web" version="1.0"/>
+	</faceted-project>
+	改成：
+	<?xml version="1.0" encoding="UTF-8"?>
+	<faceted-project>
+	  <fixed facet="wst.jsdt.web"/>
+	  <installed facet="java" version="1.7"/>
+	  <installed facet="jst.web" version="3.0"/>
+	  <installed facet="wst.jsdt.web" version="1.0"/>
+	</faceted-project>
+	
+	b、右击项目，找到properties->project facets，将Dynamic web Module
+	改为3.0，而下面的java版本也改为相应的。
+	
+	c、在web.xml文件中的<web-app>代替，其中版本要相互对应。头部如下：
+		<web-app xmlns="http://java.sun.com/xml/ns/javaee"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://java.sun.com/xml/ns/javaee
+		  http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd"
+         version="3.0">
+	
+	d、在pom.xml文件的plugins下增加如下内容：
+		<!-- 编译的时候使用JDK7和UTF8编码 ,-->
+		<plugin>
+           <artifactId>maven-compiler-plugin</artifactId>
+           <configuration>
+               <source>1.7</source>
+               <target>1.7</target>
+               <encoding>UTF-8</encoding>
+           </configuration>
+        </plugin>
+     
+     e、update maven。
+	
+3、
