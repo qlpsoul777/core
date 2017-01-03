@@ -1,0 +1,25 @@
+1、将$JAVA_HOME/jre/lib/management目录下的文件jmxremote.access、
+jmxremote.password.template复制到tomcat/conf目录下。
+
+2、修改这两个文件内容，按照例子配置好用户名密码。修改jmxremote.access权限 chmod 600 jmxremote.access;
+jmxremote.password.template改为jmxremote.password 修改权限 chmod 400 jmxremote.password。
+
+3、修改tomcat/bin目录下的catalina.sh，找到
+# ----- Execute The Requested Command -----------------
+这一行在它上面加上：
+# ----- JMX Config start ----- 
+if [ "$1" != "stop" ]; then
+      JAVA_OPTS="$JAVA_OPTS -Dcom.sun.management.jmxremote -Dcom.sun.management.jmxremote.port=8889 -Dcom.sun.management.jmxremote.authenticate=true -Dcom.sun.management.jmxremote.ssl=false -Dcom.sun.management.jmxremote.access.file=$CATALINA_HOME/conf/jmxremote.access -Dcom.sun.management.jmxremote.password.file=$CATALINA_HOME/conf/jmxremote.password"
+    fi 
+	
+export JAVA_OPTS
+# ----- JMX Config End ----- 
+
+4、重启tomcat
+
+5、进入本地的$JAVA_HOME/bin目录找到jvisualvm.exe打开，然后添加远程主机，成功后添加JMX连接，输入用户名密码即可。
+
+ps*:注意事项：
+	1、查看配置的端口是否被占用 netstat -an | grep 8889
+	2、检查服务器主机名是否是127.0.0.1 , 执行命令 hostname -i 如果是127.0.0.1 。 在etc/hosts 文件中将127.0.0.1改为主机IP(此处为 192.168.193.129 )，
+	如果不能保存，改权限chmod +x hosts。(改成外网ip)

@@ -1,0 +1,16 @@
+客户端和服务器在传递数据时可以用过滤器filter解决字符编码问题，但filter只能解决post方式提交的数据
+。对于get方式，可以使用两次encodeURI(encodeURI(“中文”))并在服务器中使用
+URLDecoder.decode(“中文”, "UTF-8");
+今天用Ajax校验数据时也遇到这个问题，尽管页面、类和web容器都统一了字符编码，提交的数据依然是乱码，
+所以就采用了2次encodeURI()编码方式，乱码问题就解决了。
+
+var name=document.myForm.username.value;
+var url="Ajax.do?method=check&name="+encodeURI(encodeURI(name));
+xmlHttp.open("GET",url,true);
+action中
+String name = request.getParameter("name");
+name = URLDecoder.decode(name, "UTF-8");
+//servlet返回数据时，将字符编码设置为utf-8就可以了，因为Ajax只支持utf-8
+response.setContentType("text/xml;charset=utf-8");
+PrintWriter out = response.getWriter();
+out.print(result);

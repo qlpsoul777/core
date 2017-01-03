@@ -1,0 +1,23 @@
+使用例：
+JPA:
+@OneToMany(fetch=FetchType.EAGER)
+
+Hibernate:
+@Fetch(value=FetchMode.SUBSELECT)
+
+两者比较：两者都是设定关联对象的加载策略。
+FetchType是JPA标准的通用加载策略注解属性，
+	FetchType可选值意义与区别如下：
+		FetchType.LAZY: 懒加载，在访问关联对象的时候加载(即从数据库读入内存)
+		FetchType.EAGER:立刻加载，在查询主对象的时候同时加载关联对象。
+
+FetchMode
+	Hibernate自有加载策略注解属性。
+		@Fetch(FetchMode.JOIN):始终立刻加载，使用外连(outer join)查询的同时加载关联对象，
+		忽略FetchType.LAZY设定。
+
+		@Fetch(FetchMode.SELECT):默认懒加载(除非设定关联属性lazy=false)，当访问每一个关联
+		对象时加载该对象，会累计产生N+1条sql语句.
+
+		@Fetch(FetchMode.SUBSELECT):默认懒加载(除非设定关联属性lazy=false),在访问第一个
+		关联对象时加载所有的关联对象。会累计产生两条sql语句。且FetchType设定有效。
