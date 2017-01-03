@@ -1,4 +1,4 @@
-package com.qlp.july.enums;
+package com.qlp.july.core.enums;
 
 /**
  * 页面内容类型
