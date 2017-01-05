@@ -1,8 +1,7 @@
 package com.qlp.core.page;
 
-import java.util.Map;
 
-public interface Pageable {
+public interface Pageable<T> {
 	
 	/**
 	 * 每页显示条数
@@ -23,6 +22,12 @@ public interface Pageable {
 	int getOffset();
 	
 	/**
+	 * 总记录数
+	 * @return
+	 */
+	long getTotalElement();
+	
+	/**
 	 * 排序条件
 	 * @return
 	 */
@@ -31,6 +36,8 @@ public interface Pageable {
 	/**
 	 * 查询条件
 	 */
-	Map<String,Object> getParams();
+	T getParams();
+	
+	
 
 }

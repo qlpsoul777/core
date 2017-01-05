@@ -1,12 +1,15 @@
 package com.qlp.core.page;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
 import com.qlp.core.util.AssertUtil;
 
-public class Sort{
+public class Sort implements Serializable{
+	
+	private static final long serialVersionUID = 8454608608411584443L;
 	
 	private static final Direction DEFAULT_DIRECTION = Direction.ASC;
 	private final List<Order> orders;
@@ -50,6 +53,13 @@ public class Sort{
 			this.property = property;
 		}
 		
+		public String getProperty(){
+			return property;
+		}
+		
+		public Direction getDirection(){
+			return direction;
+		}
 		
 	}
 

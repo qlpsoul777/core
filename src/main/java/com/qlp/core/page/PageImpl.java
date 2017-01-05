@@ -9,17 +9,14 @@ import com.qlp.core.util.AssertUtil;
 public class PageImpl<T> implements Page<T> {
 	
 	private final List<T> content = new ArrayList<>();
-	private final Pageable pageable;
-	private final long totalElements;
+	private final Pageable<T> pageable;
 	
-	
-	public PageImpl(List<T> content,Pageable pageable,long totalElements){
+	public PageImpl(List<T> content,Pageable<T> pageable){
 		AssertUtil.assertNotNull(content, "分页对象不能为null");
 		AssertUtil.assertNotNull(pageable, "分页条件不能为null");
 		
 		this.content.addAll(content);
 		this.pageable = pageable;
-		this.totalElements = totalElements;
 	}
 
 	@Override
@@ -49,7 +46,7 @@ public class PageImpl<T> implements Page<T> {
 
 	@Override
 	public long getTotalElements() {
-		return totalElements;
+		return pageable.getTotalElement();
 	}
 
 }

@@ -1,24 +1,27 @@
 package com.qlp.core.page;
 
-import java.io.Serializable;
-import java.util.Map;
-
+import com.qlp.core.entity.BaseEntity;
 import com.qlp.core.util.AssertUtil;
 
 
-public class PageRequest implements Pageable,Serializable{
+public class PageRequest<T> extends BaseEntity implements Pageable<T>{
 
 	private static final long serialVersionUID = -7811548451180065787L;
 	
 	private final int pageSize;
 	private final int currentPage;
+	private final T params;
 	
-	public PageRequest(int pageSize,int currentPage){
+	private long totalElement;
+	private Sort sort;
+	
+	public PageRequest(int pageSize,int currentPage,T params){
 		AssertUtil.assertTrue(pageSize >= 1, "每页显示记录数不能小于1");
 		AssertUtil.assertTrue(currentPage >= 0, "当前页不能小于0");
 		
 		this.pageSize = pageSize;
 		this.currentPage = currentPage;
+		this.params = params;
 	}
 
 	@Override
@@ -37,13 +40,22 @@ public class PageRequest implements Pageable,Serializable{
 	}
 	
 	@Override
-	public Sort getSort() {
-		return null;
+	public T getParams() {
+		return params;
 	}
 
 	@Override
-	public Map<String, Object> getParams() {
-		return null;
+	public long getTotalElement() {
+		return totalElement;
+	}
+	
+	@Override
+	public Sort getSort() {
+		return sort;
+	}
+	
+	public void setSort(Sort sort) {
+		this.sort = sort;
 	}
 	
 }

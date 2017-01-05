@@ -4,8 +4,6 @@ import java.util.List;
 
 /**
  * 分页对象接口
- * 	类层次： interface Page<T>
- * 			---> PageImpl<T>实现Page接口，聚合Pageable接口
  * @author qlp
  * @param <T>
  */
