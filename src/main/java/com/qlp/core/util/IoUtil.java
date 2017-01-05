@@ -47,6 +47,18 @@ public class IoUtil {
         }
 	}
 	
-	
+	public static void close(AutoCloseable ... autos){
+		if (autos != null) {
+			try {
+				for (AutoCloseable closeable : autos) {
+					if (closeable != null) {
+						closeable.close();
+					}
+				}
+			} catch (Exception e) {
+				LogUtil.error(logger, "关闭流出错：{1}",e);
+			}
+		}
+	}
 
 }
