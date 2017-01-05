@@ -41,7 +41,7 @@ public class PageImpl<T> implements Page<T> {
 
 	@Override
 	public int getTotalPage() {
-		return 0;
+		return (int)Math.floor(getTotalElements() / getPageSize()) + 1;
 	}
 
 	@Override

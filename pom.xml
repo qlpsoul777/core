@@ -90,7 +90,7 @@
 			<groupId>org.mybatis</groupId>
 			<artifactId>mybatis</artifactId>
 			<version>${mybatis.version}</version>
-			<scope>compile</scope>
+			<scope>provided</scope>
 		</dependency>
 		<!-- mybatis end -->
 

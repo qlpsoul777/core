@@ -24,4 +24,7 @@ public @interface PageRequestParam {
 	/**	分页条数	*/
 	int size() default 10;
 	
+	/**	是否增加排序条件	*/
+	boolean isSort() default false;
+	
 }

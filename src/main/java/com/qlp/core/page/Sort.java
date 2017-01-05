@@ -1,17 +1,18 @@
 package com.qlp.core.page;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import com.qlp.core.entity.BaseEntity;
 import com.qlp.core.util.AssertUtil;
 
-public class Sort implements Serializable{
+public class Sort extends BaseEntity{
 	
 	private static final long serialVersionUID = 8454608608411584443L;
 	
 	private static final Direction DEFAULT_DIRECTION = Direction.ASC;
+	
 	private final List<Order> orders;
 	
 	public Sort(List<Order> orders){
@@ -39,7 +40,6 @@ public class Sort implements Serializable{
 	public static enum Direction{
 		ASC,DESC;
 	}
-	
 	
 	public static class Order{
 		

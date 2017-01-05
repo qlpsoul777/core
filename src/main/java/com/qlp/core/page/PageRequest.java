@@ -10,17 +10,18 @@ public class PageRequest<T> extends BaseEntity implements Pageable<T>{
 	
 	private final int pageSize;
 	private final int currentPage;
+	private final Sort sort;
 	private final T params;
 	
 	private long totalElement;
-	private Sort sort;
 	
-	public PageRequest(int pageSize,int currentPage,T params){
+	public PageRequest(int pageSize,int currentPage,Sort sort,T params){
 		AssertUtil.assertTrue(pageSize >= 1, "每页显示记录数不能小于1");
 		AssertUtil.assertTrue(currentPage >= 0, "当前页不能小于0");
 		
 		this.pageSize = pageSize;
 		this.currentPage = currentPage;
+		this.sort = sort;
 		this.params = params;
 	}
 
@@ -52,10 +53,6 @@ public class PageRequest<T> extends BaseEntity implements Pageable<T>{
 	@Override
 	public Sort getSort() {
 		return sort;
-	}
-	
-	public void setSort(Sort sort) {
-		this.sort = sort;
 	}
 	
 }
