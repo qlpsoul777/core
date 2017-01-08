@@ -1,0 +1,5 @@
+1、打开IntelliJ IDEA的安装路径，${idea_home}\bin 找到idea.exe.vmoptions 文件，
+用记事本打开，在最后一行填加：“-Dfile.encoding=UTF-8”。
+
+2、设置IDEA server编码。在菜单栏找到"Run->EditConfigrations " 找到"Server"选项卡
+ 设置 VM options 为 -Dfile.encoding=UTF-8。

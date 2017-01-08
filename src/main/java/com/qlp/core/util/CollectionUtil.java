@@ -45,10 +45,18 @@ public final class CollectionUtil {
 	public static boolean isNotBlank(Collection<?> col){
 		return !isBlank(col);
 	}
+
+	public static boolean isBlank(Object[] objs){
+		return (null == objs) || (objs.length <= 0);
+	}
+
+	public static boolean isNotBlank(Object[] objs){
+		return !isBlank(objs);
+	}
 	
 	/**
 	 * 判断Map是否为null
-	 * @param col
+	 * @param map
 	 * @return
 	 */
 	public static boolean isNull(Map<?,?> map){

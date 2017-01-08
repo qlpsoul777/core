@@ -40,7 +40,7 @@ public final class DataConvertUtil {
 		try {
 			defaultVal = Long.parseLong(toStr(obj));
 		} catch (Exception e) {
-			LogUtil.warn(logger, "{0}转Long出错：{1}",obj,e);
+			//此处忽略异常处理
 		}
 		return defaultVal;
 	}
@@ -64,7 +64,7 @@ public final class DataConvertUtil {
 		try {
 			defaultVal = Integer.parseInt(toStr(obj));
 		} catch (Exception e) {
-			LogUtil.warn(logger, "{0}转Integer出错：{1}",obj,e);
+			//此处忽略异常处理
 		}
 		return defaultVal;
 	}
@@ -88,7 +88,7 @@ public final class DataConvertUtil {
 		try {
 			defaultVal = Double.parseDouble(toStr(obj));
 		} catch (Exception e) {
-			LogUtil.warn(logger, "{0}转Double出错：{1}",obj,e);
+			//此处忽略异常处理
 		}
 		return defaultVal;
 	}
