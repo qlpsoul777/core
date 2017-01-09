@@ -1,16 +1,12 @@
 package com.qlp.core.util;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 /**
  * 数据类型转换工具类
  * @author qlp
- *	依赖： (外部)：slf4j。
+ *	依赖： (外部)：无。
  */
 public final class DataConvertUtil {
-	
-	private static final Logger logger = LoggerFactory.getLogger(DataConvertUtil.class);
 	
 	/**
 	 * 对象转String
