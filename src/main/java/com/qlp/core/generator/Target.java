@@ -1,13 +1,17 @@
 package com.qlp.core.generator;
 
-public class Target {
+import com.qlp.core.entity.BaseEntity;
+
+public class Target extends BaseEntity{
 	
-	private  final String rootPath;
-	private  final String appName;
+	private static final long serialVersionUID = -1000824977279287248L;
 	
-	private String parentPath;
-	private String name;
-	private String lowName;
+	private  final String rootPath;	//工程绝对根路径
+	private  final String appName;	//工程名
+	
+	private String parentPath;	//父目录路径
+	private String name;		//对象名
+	private String lowName;		//首字母小写对象名
 	
 	public Target(String rootPath,String appName){
 		this.rootPath = rootPath;
@@ -37,7 +41,7 @@ public class Target {
 	public void setLowName(String lowName) {
 		this.lowName = lowName;
 	}
-
+	
 	public String getRootPath() {
 		return rootPath;
 	}
