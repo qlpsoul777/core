@@ -1,6 +1,7 @@
 package com.qlp.core.generator;
 
 import java.io.File;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -11,8 +12,12 @@ import org.slf4j.LoggerFactory;
 
 import com.qlp.core.util.AssertUtil;
 import com.qlp.core.util.CollectionUtil;
+import com.qlp.core.util.FreeMarkerUtil;
 import com.qlp.core.util.LogUtil;
 import com.qlp.core.util.StringUtil;
+
+import freemarker.template.Configuration;
+import freemarker.template.Template;
 
 public class GeneratorHelper {
 	
@@ -92,49 +97,105 @@ public class GeneratorHelper {
 	 * @param targets
 	 */
 	private void createCode(List<Target> targets) {
+		LogUtil.info(logger, "-------自动生成java代码文件start-------");
 		Map<String,Target> model = null;
 		for (Target target : targets) {
 			model = new HashMap<>(2);
 			model.put("target", target);
-			String basePath = getBasePath(target);
-			LogUtil.info(logger, "代码文件存放路径basePath：{0}",basePath);
-			createDao(model,basePath);
-			createService(model,basePath);
-			createController(model,basePath);
+			createDao(model,getPath(target,"dao"));
+			createService(model,getPath(target,"service"));
+			createController(model,getPath(target,"controller"));
+		}
+		LogUtil.info(logger, "-------自动生成java代码文件end-------");
+	}
+	
+	private Configuration getConfiguration() {
+		URL url = GeneratorHelper.class.getResource("/template");
+		String path = url.getFile();
+		LogUtil.info(logger, "模板文件存放文件夹地址：{0}", path);
+		AssertUtil.assertNotBlank(path, "template文件不存在");
+		return FreeMarkerUtil.getConfiguration(path);
+	}
+	
+	private boolean exists(String path) {
+		File file = new File(path);
+		return file.exists();
+	}
+	
+	/**
+	 * 生成Dao层代码文件
+	 * @param model
+	 * @param basePath
+	 */
+	private void createDao(Map<String, Target> model, String path) {
+		if(!exists(path)){
+			Template template = FreeMarkerUtil.getTemplate(getConfiguration(),"BaseDao.ftl");
+			AssertUtil.assertNotNull(template, "template is null");
+			
+			FreeMarkerUtil.renderFile(template, model, path);
+		}
+	}
+
+	
+
+	/**
+	 * 生成Service层代码文件
+	 * @param model
+	 * @param basePath
+	 */
+	private void createService(Map<String, Target> model, String path) {
+		if(!exists(path)){
+			Template template = FreeMarkerUtil.getTemplate(getConfiguration(),"BaseService.ftl");
+			AssertUtil.assertNotNull(template, "template is null");
+			
+			FreeMarkerUtil.renderFile(template, model, path);
 		}
 		
 	}
-	
-	private void createDao(Map<String, Target> model, String basePath) {
-		// TODO Auto-generated method stub
-		
+
+	/**
+	 * 生成Controller层代码文件
+	 * @param model
+	 * @param basePath
+	 */
+	private void createController(Map<String, Target> model, String path) {
+		if(!exists(path)){
+			Template template = FreeMarkerUtil.getTemplate(getConfiguration(),"BaseController.ftl");
+			AssertUtil.assertNotNull(template, "template is null");
+			
+			FreeMarkerUtil.renderFile(template, model, path);
+		}
 	}
 
-	private void createService(Map<String, Target> model, String basePath) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	private void createController(Map<String, Target> model, String basePath) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	private String getBasePath(Target target) {
+	/**
+	 * 获取生成文件的基本绝对路径
+	 * @param target
+	 * @return
+	 */
+	private String getPath(Target target,String type) {
 		StringBuilder sb = new StringBuilder(generator.getSrcPath());
-		sb.append(File.separator).append(generator.getParentPath())
-		.append(File.separator).append(target.getName());
+		sb.append(File.separator).append(type)
+		.append(File.separator).append(generator.getParentPath())
+		.append(File.separator).append(target.getName())
+		.append(StringUtil.firstCharUpper(type)).append(".java");
 		return sb.toString();
 	}
 	
 	private void createJsp(List<Target> targets) {
-		// TODO Auto-generated method stub
-		
+		if(generator.getIsCreateJsp()){
+			LogUtil.info(logger, "-------自动生成jsp文件start-------");
+			LogUtil.info(logger, "-------自动生成jsp文件end-------");
+		}
 	}
 
 	private void createSql(List<Target> targets) {
-		// TODO Auto-generated method stub
+		if(generator.getIsCreateSql()){
+			LogUtil.info(logger, "-------自动生成sql文件start-------");
+			LogUtil.info(logger, "-------自动生成sql文件end-------");
+		}
 		
 	}
+	
+	
 
 }
