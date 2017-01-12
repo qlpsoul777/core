@@ -133,6 +133,8 @@ public class GeneratorHelper {
 			AssertUtil.assertNotNull(template, "template is null");
 			
 			FreeMarkerUtil.renderFile(template, model, path);
+		}else{
+			LogUtil.info(logger, "文件：{0}，已存在，跳过本次操作",path);
 		}
 	}
 
@@ -149,6 +151,8 @@ public class GeneratorHelper {
 			AssertUtil.assertNotNull(template, "template is null");
 			
 			FreeMarkerUtil.renderFile(template, model, path);
+		}else{
+			LogUtil.info(logger, "文件：{0}，已存在，跳过本次操作",path);
 		}
 		
 	}
@@ -164,6 +168,8 @@ public class GeneratorHelper {
 			AssertUtil.assertNotNull(template, "template is null");
 			
 			FreeMarkerUtil.renderFile(template, model, path);
+		}else{
+			LogUtil.info(logger, "文件：{0}，已存在，跳过本次操作",path);
 		}
 	}
 
