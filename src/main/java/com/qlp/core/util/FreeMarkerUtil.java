@@ -15,25 +15,17 @@ import freemarker.template.TemplateExceptionHandler;
 
 public class FreeMarkerUtil {
 	
-	private volatile static Configuration cfg;
-	
 	public static Configuration getConfiguration(String path){
-		if(cfg == null){
-			synchronized (Configuration.class) {
-				if(cfg == null){
-					Configuration cfg = new Configuration();
-			        cfg.setDefaultEncoding("UTF-8");
-			        cfg.setTemplateExceptionHandler(TemplateExceptionHandler.RETHROW_HANDLER);
-			        
-			        File templateFiles = new File(path);
-			        try {
-			            cfg.setDirectoryForTemplateLoading(templateFiles);
-			        } catch (IOException e) {
-			            throw new MyException(e);
-			        }
-				}
-			}
-		}
+		Configuration cfg = new Configuration();
+        cfg.setDefaultEncoding("UTF-8");
+        cfg.setTemplateExceptionHandler(TemplateExceptionHandler.RETHROW_HANDLER);
+        
+        File templateFiles = new File(path);
+        try {
+            cfg.setDirectoryForTemplateLoading(templateFiles);
+        } catch (IOException e) {
+            throw new MyException(e);
+        }
         return cfg;
     }
 	
