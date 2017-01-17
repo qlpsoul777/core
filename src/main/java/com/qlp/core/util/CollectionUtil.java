@@ -47,7 +47,7 @@ public final class CollectionUtil {
 	}
 
 	public static boolean isBlank(Object[] objs){
-		return (null == objs) || (objs.length <= 0);
+		return (null == objs) || (objs.length == 0);
 	}
 
 	public static boolean isNotBlank(Object[] objs){
@@ -79,6 +79,10 @@ public final class CollectionUtil {
 	 */
 	public static boolean isNotBlank(Map<?,?> map){
 		return (null!= map) && (!map.isEmpty());
+	}
+
+	public static boolean isBlank(byte[] bytes) {
+		return (null == bytes) || (bytes.length == 0);
 	}
 
 }
