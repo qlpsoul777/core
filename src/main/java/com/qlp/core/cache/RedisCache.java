@@ -21,7 +21,7 @@ public class RedisCache<K, V> implements Cache<K, V>{
 	
 	private RedisTemplate<String, Object> redisTemplate;
 	private String keyPrefix;
-	private static final long DEFAULT_TIMEOUT = 600L; 
+	private static final long DEFAULT_TIMEOUT = 0L; 
 	
 
 	public RedisCache(RedisTemplate<String, Object> redisTemplate, String keyPrefix) {
