@@ -88,4 +88,9 @@ public class RedisUtil {
         return redisTemplate.hasKey(key);
     }
 
+	public static void setRedisTemplate(
+			RedisTemplate<Serializable, Object> redisTemplate) {
+		RedisUtil.redisTemplate = redisTemplate;
+	}
+
 }
