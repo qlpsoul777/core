@@ -12,6 +12,8 @@ public class Target extends BaseEntity{
 	private String parentPath;	//父目录路径
 	private String name;		//对象名
 	private String lowName;		//首字母小写对象名
+	private String tableName;	//表名
+	private String className;	//完整类名
 	
 	public Target(String rootPath,String appName){
 		this.rootPath = rootPath;
@@ -49,6 +51,21 @@ public class Target extends BaseEntity{
 	public String getAppName() {
 		return appName;
 	}
-	
+
+	public String getTableName() {
+		return tableName;
+	}
+
+	public void setTableName(String tableName) {
+		this.tableName = tableName;
+	}
+
+	public String getClassName() {
+		return className;
+	}
+
+	public void setClassName(String className) {
+		this.className = className;
+	}
 	
 }

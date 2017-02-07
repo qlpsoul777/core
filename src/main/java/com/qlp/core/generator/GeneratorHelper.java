@@ -73,6 +73,8 @@ public class GeneratorHelper {
 				target.setParentPath(generator.getParentPath());
 				target.setName(name);
 				target.setLowName(StringUtil.firstCharLower(name));
+				target.setTableName(getTableName(generator.getParentPath(),name));
+				target.setClassName(getClassName(rootPath,generator.getParentPath(),name));
 				LogUtil.info(logger, "根据配置的entitys组装待处理Target:{0}",target);
 				list.add(target);
 			}
@@ -81,6 +83,20 @@ public class GeneratorHelper {
 		return list;
 	}
 	
+	private String getClassName(String rootPath, String parentPath, String name) {
+		StringBuilder sb = new StringBuilder(rootPath);
+		sb.append(".").append("entity.").append(parentPath)
+		.append(".").append(name);
+		return sb.toString();
+	}
+
+	private String getTableName(String parentPath, String name) {
+		StringBuilder sb = new StringBuilder("T_");
+		sb.append(parentPath.toUpperCase()).append("_")
+		.append(name.toUpperCase());
+		return sb.toString();
+	}
+
 	/**
 	 * 根据rootPath获取appName
 	 * @return
@@ -197,11 +213,15 @@ public class GeneratorHelper {
 	private void createSql(List<Target> targets) {
 		if(generator.getIsCreateSql()){
 			LogUtil.info(logger, "-------自动生成sql文件start-------");
+			Map<String,Target> model = null;
+			for (Target target : targets) {
+				model = new HashMap<>(2);
+				model.put("target", target);
+				
+			}
 			LogUtil.info(logger, "-------自动生成sql文件end-------");
 		}
 		
 	}
-	
-	
 
 }
