@@ -9,6 +9,8 @@ import java.util.StringTokenizer;
  *
  */
 public class StringUtil{
+	
+	public static final char UNDERLINE='_';
 
 	/**
 	 * 首字母大写
@@ -22,7 +24,7 @@ public class StringUtil{
 			return null;
 		}
 		char c = in.charAt(0);
-		if(c >= 'a' || c <= 'z'){
+		if(Character.isLowerCase(c)){
 			StringBuilder sb = new StringBuilder(in.length());
 			sb.append(Character.toUpperCase(c)).append(in.substring(1));
 			return sb.toString();
@@ -42,14 +44,65 @@ public class StringUtil{
 			return null;
 		}
 		char c = in.charAt(0);
-		if(c >= 'A' || c <= 'Z'){
+		if(Character.isUpperCase(c)){
 			StringBuilder sb = new StringBuilder(in.length());
 			sb.append(Character.toLowerCase(c)).append(in.substring(1));
 			return sb.toString();
 		}
 		return in;
 	}
-
+	
+	/**
+	 * 驼峰式改为下划线分割式eg:userName--->user_name
+	 * @param in
+	 * @return
+	 */
+	public static String camelToUnderline(String in){
+		if(null == in || in.trim().length() == 0){
+			return null;
+		}
+		if(in.length() < 4){
+			return in;
+		}
+		char c;
+		int len = in.length();
+		StringBuilder sb = new StringBuilder(len + 4);
+		for(int i=0;i<len;i++){
+			c = in.charAt(i);
+			if(Character.isUpperCase(c)){
+				sb.append(UNDERLINE).append(Character.toLowerCase(c));
+			}else{
+				sb.append(c);
+			}
+		}
+		return sb.toString();
+	}
+	
+	/**
+	 *  下划线分割式改为驼峰式eg:user_name--->userName
+	 * @param in
+	 * @return
+	 */
+	public static String underlineToCamel(String in) {
+		if (null == in || in.trim().length() == 0) {
+			return null;
+		}
+		int len = in.length();
+		StringBuilder sb = new StringBuilder(len);
+		char c;
+		for (int i = 0; i < len; i++) {
+			c = in.charAt(i);
+			if (c == UNDERLINE) {
+				if (++i < len) {
+					sb.append(Character.toUpperCase(in.charAt(i)));
+				}
+			} else {
+				sb.append(c);
+			}
+		}
+		return sb.toString();
+	}
+	
 	public static Long[] toLongArray(String input, String septate) {
 		StringTokenizer st = new StringTokenizer(input, septate);
 		Long[] result = new Long[st.countTokens()];

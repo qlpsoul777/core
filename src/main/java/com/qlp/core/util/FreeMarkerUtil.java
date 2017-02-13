@@ -5,6 +5,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.StringReader;
 import java.io.StringWriter;
+import java.util.Locale;
 import java.util.Map;
 
 import com.qlp.core.exception.MyException;
@@ -18,6 +19,7 @@ public class FreeMarkerUtil {
 	public static Configuration getConfiguration(String path){
 		Configuration cfg = new Configuration();
         cfg.setDefaultEncoding("UTF-8");
+        cfg.setLocale(Locale.SIMPLIFIED_CHINESE);
         cfg.setTemplateExceptionHandler(TemplateExceptionHandler.RETHROW_HANDLER);
         
         File templateFiles = new File(path);

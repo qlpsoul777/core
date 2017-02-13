@@ -24,6 +24,7 @@ public class GeneratorHelper {
 	private static final Logger logger = LoggerFactory.getLogger(GeneratorHelper.class);
 	
 	private Generator generator;
+	private static Configuration configuration;
 	
 	public Generator getGenerator() {
 		return generator;
@@ -37,6 +38,8 @@ public class GeneratorHelper {
 		LogUtil.info(logger, "generator:{0}",generator);
 		if(generator.getIsCreate()){
 			LogUtil.info(logger, "-------自动生成文件start-------");
+			
+			initConfiguration();
 			
 			List<Target> targets = getTargets();
 			if(CollectionUtil.isNotBlank(targets)){
@@ -125,12 +128,12 @@ public class GeneratorHelper {
 		LogUtil.info(logger, "-------自动生成java代码文件end-------");
 	}
 	
-	private Configuration getConfiguration() {
+	private static void initConfiguration() {
 		URL url = GeneratorHelper.class.getResource("/template");
 		String path = url.getFile();
 		LogUtil.info(logger, "模板文件存放文件夹地址：{0}", path);
 		AssertUtil.assertNotBlank(path, "template文件不存在");
-		return FreeMarkerUtil.getConfiguration(path);
+		configuration = FreeMarkerUtil.getConfiguration(path);
 	}
 	
 	private boolean exists(String path) {
@@ -145,7 +148,7 @@ public class GeneratorHelper {
 	 */
 	private void createDao(Map<String, Target> model, String path) {
 		if(!exists(path)){
-			Template template = FreeMarkerUtil.getTemplate(getConfiguration(),"BaseDao.ftl");
+			Template template = FreeMarkerUtil.getTemplate(configuration,"BaseDao.ftl");
 			AssertUtil.assertNotNull(template, "template is null");
 			
 			FreeMarkerUtil.renderFile(template, model, path);
@@ -163,7 +166,7 @@ public class GeneratorHelper {
 	 */
 	private void createService(Map<String, Target> model, String path) {
 		if(!exists(path)){
-			Template template = FreeMarkerUtil.getTemplate(getConfiguration(),"BaseService.ftl");
+			Template template = FreeMarkerUtil.getTemplate(configuration,"BaseService.ftl");
 			AssertUtil.assertNotNull(template, "template is null");
 			
 			FreeMarkerUtil.renderFile(template, model, path);
@@ -180,7 +183,7 @@ public class GeneratorHelper {
 	 */
 	private void createController(Map<String, Target> model, String path) {
 		if(!exists(path)){
-			Template template = FreeMarkerUtil.getTemplate(getConfiguration(),"BaseController.ftl");
+			Template template = FreeMarkerUtil.getTemplate(configuration,"BaseController.ftl");
 			AssertUtil.assertNotNull(template, "template is null");
 			
 			FreeMarkerUtil.renderFile(template, model, path);
@@ -213,15 +216,35 @@ public class GeneratorHelper {
 	private void createSql(List<Target> targets) {
 		if(generator.getIsCreateSql()){
 			LogUtil.info(logger, "-------自动生成sql文件start-------");
-			Map<String,Target> model = null;
+			Map<String,Object> model = null;
 			for (Target target : targets) {
 				model = new HashMap<>(2);
 				model.put("target", target);
-				
+				model.put("sql_fields", new SqlFieldsDirective());
+				createSqlFile(model, getSqlPath(target));
 			}
 			LogUtil.info(logger, "-------自动生成sql文件end-------");
 		}
 		
+	}
+
+	private void createSqlFile(Map<String, Object> model, String path) {
+		if(!exists(path)){
+			Template template = FreeMarkerUtil.getTemplate(configuration,"BaseSql.ftl");
+			AssertUtil.assertNotNull(template, "template is null");
+			
+			FreeMarkerUtil.renderFile(template, model, path);
+		}else{
+			LogUtil.info(logger, "文件：{0}，已存在，跳过本次操作",path);
+		}
+		
+	}
+
+	private String getSqlPath(Target target) {
+		StringBuilder sb = new StringBuilder(generator.getSqlPath());
+		sb.append(File.separator);
+		sb.append(target.getName()).append(".xml");
+		return sb.toString();
 	}
 
 }
