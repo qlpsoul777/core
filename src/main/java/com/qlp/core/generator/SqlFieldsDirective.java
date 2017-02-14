@@ -47,15 +47,11 @@ public class SqlFieldsDirective implements TemplateDirectiveModel {
 		}
 		Writer out = env.getOut();
 		String result = sb.delete(sb.lastIndexOf(","),sb.length()).toString();
+		result = result + "\n        ";
 		out.write(result);
 		out.flush();
 	}
 	
-	public static void main(String[] args) {
-		StringBuilder sb = new StringBuilder("aaaaaaaa1,1\n");
-		System.out.println(sb.delete(sb.lastIndexOf(","),sb.length()));
-	}
-
 	private boolean isBuild(Class<?> clazz) {
 		String typeName = clazz.getName();
 		if(typeName.startsWith("java.lang")){
