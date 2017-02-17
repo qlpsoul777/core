@@ -35,10 +35,10 @@ public class SqlFieldsDirective implements TemplateDirectiveModel {
 			String fieldName;
 			for(Field field : fields){
 				fieldName = field.getName();
-				if(isBuild(field.getType())){
-					sb.append("            ");
+				if(SqlBuildUtil.isBuild(field.getType())){
+					sb.append(StringUtil.outLimitSpace(12));
 					sb.append(StringUtil.camelToUnderline(fieldName).toUpperCase());
-					sb.append(' ');
+					sb.append(StringUtil.outLimitSpace(1));
 					sb.append(fieldName).append(',').append('\n');
 				}
 			}
@@ -47,23 +47,11 @@ public class SqlFieldsDirective implements TemplateDirectiveModel {
 		}
 		Writer out = env.getOut();
 		String result = sb.delete(sb.lastIndexOf(","),sb.length()).toString();
-		result = result + "\n        ";
+		result = result + "\n" + StringUtil.outLimitSpace(6);
 		out.write(result);
 		out.flush();
 	}
 	
-	private boolean isBuild(Class<?> clazz) {
-		String typeName = clazz.getName();
-		if(typeName.startsWith("java.lang")){
-			return true;
-		}
-		if(typeName.equals("java.util.Date")){
-			return true;
-		}
-		if(clazz.isEnum()){
-			return true;
-		}
-		return false;
-	}
+	
 
 }

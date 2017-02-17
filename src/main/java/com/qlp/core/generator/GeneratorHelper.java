@@ -221,6 +221,7 @@ public class GeneratorHelper {
 				model = new HashMap<>(2);
 				model.put("target", target);
 				model.put("sql_fields", new SqlFieldsDirective());
+				model.put("sql_case", new SqlCaseDirective());
 				createSqlFile(model, getSqlPath(target));
 			}
 			LogUtil.info(logger, "-------自动生成sql文件end-------");

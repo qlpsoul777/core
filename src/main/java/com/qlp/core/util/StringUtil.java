@@ -103,6 +103,22 @@ public class StringUtil{
 		return sb.toString();
 	}
 	
+	/**
+	 * 输出指定长度的空格，一般用于字符串格式化
+	 * @param limit 长度范围是1-127
+	 * @return
+	 */
+	public static String outLimitSpace(int limit){
+		if(limit <=0 || limit > Byte.MAX_VALUE){
+			throw new IllegalArgumentException("长度超出限制");
+		}
+		StringBuilder sb = new StringBuilder(limit);
+		for (int i = 0; i < limit; i++) {
+			sb.append(" ");
+		}
+		return sb.toString();
+	}
+	
 	public static Long[] toLongArray(String input, String septate) {
 		StringTokenizer st = new StringTokenizer(input, septate);
 		Long[] result = new Long[st.countTokens()];
