@@ -1,10 +1,14 @@
 package com.qlp.core.util;
 
+import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileOutputStream;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.io.OutputStreamWriter;
 import java.io.StringReader;
 import java.io.StringWriter;
+import java.io.Writer;
 import java.util.Locale;
 import java.util.Map;
 
@@ -40,14 +44,14 @@ public class FreeMarkerUtil {
 	
 	public static void renderFile(Template template,Map<String,?> model,String path){
 		File file = FileUtil.createParentIfNotExists(new File(path));
-		FileWriter fw = null;
+		Writer out = null;
 		try {
-			fw = new FileWriter(file);
-			template.process(model, fw);
+			out = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(file), "UTF-8"));
+			template.process(model, out);
 		} catch (Exception e) {
 			throw new MyException(e);
 		}finally{
-			IoUtil.close(fw);
+			IoUtil.close(out);
 		}
 	}
 	
