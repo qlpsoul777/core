@@ -1,0 +1,15 @@
+1、基本数据类型有哪些？
+	数值型：	基本类型				对应包装类型
+		整型：
+			byte(8) 			Byte
+			short(16) 			Short
+			int(32)				Integer
+			long(64)			Long
+		浮点型：
+			float(32)			Float
+			double(64)			Double
+	字符型：
+			char(16)			Character
+	布尔型：
+			boolean(8)			Boolean
+		

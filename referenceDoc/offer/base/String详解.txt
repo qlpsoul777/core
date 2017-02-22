@@ -1,0 +1,92 @@
+1、String、StringBuffer、StringBuilder之间的联系？
+	三者都实现了Serializable、CharSequence接口，三者都与字符串相关，
+	String实现了Comparable接口，所以可以进行自然排序。
+	后两个继承自AbstractStringBuilder类（主要提供了拼接、插入、删除方法）。
+    String 字符串常量，是不可改变的量，创建后就不能修改了
+    StringBuffer 字符串变量（线程安全）是一个可变字符串序列，创建后可修改。
+    StringBuilder 字符串变量（非线程安全）是一个可变字符串序列，创建后可修改。
+    
+    
+2、使用场景？
+    String类的场景：
+    	在字符串不经常变化的场景中可以使用String类，例如常量的声明、少量的变量运算。
+    StringBuffer类的场景：
+    	在频繁进行字符串运算（如拼接、替换、删除等），并且运行在多线程环境中，则可以考虑使用
+    	StringBuffer，例如XML解析、HTTP参数解析和封装。
+    StringBuilder类的场景：
+    	在频繁进行字符串运算（如拼接、替换、和删除等），并且运行在单线程的环境中，
+    	则可以考虑使用StringBuilder，如SQL语句的拼装、JSON封装等。
+    
+    	
+3、为什么String类是不可变的？
+	1、不可变性提供了安全性，例如 网络连接地址URL,文件路径path,还有反射机制所需要的String参数等,
+	 假若String是可变的,将会引起各种安全隐患。
+	2、因为字符串是不可变的，所以是多线程安全的
+	3、字符串是不可变的，字符串池才能实现，才能复用已存在的字符串，节省内存空间
+	4、不可变性使其非常适合作为Map的键值，因为字符串是不可变的，所以总能根据键值获取对应value值，
+	而且在它创建的时候hashcode就被缓存了，不需要重新计算，所以在取值时也可根据键很快获取value值。
+	
+	
+4、字符串拼接用String+好还是StringBuilder好？
+	在一般情况下+号操作会被编译器优化成StringBuilder然后执行append()方法，所以一般可以直接
+	用+号拼接，这样最简洁效率也很快，但如果在比较复杂的结构中（eg:循环）执行大量的字符串拼接操作
+	最好还是用StringBuilder操作。
+	
+	
+5、常用方法?
+	1、String subString(int start,int end)
+		输入："0123456789".subString(4,7)
+		输出："456"。
+		*：包含索引开始的字符，不包含索引结束的字符，（含头不含尾）。
+		
+	2、native String intern()
+		输入：
+			String a = new String("ab");
+	        String b = new String("ab");
+	        String c = "ab";
+	        String d = "a" + "b";
+	        String e = "b";
+	        String f = "a" + e;
+	
+	        System.out.println(b.intern() == a);
+	        System.out.println(b.intern() == c);
+	        System.out.println(b.intern() == d);
+	        System.out.println(b.intern() == f);
+	        System.out.println(b.intern() == a.intern());
+    	输出：
+    		false
+			true
+			true
+			false
+			true
+		返回字符串对象的规范化表示形式。
+		一个初始时为空的字符串池，它由类 String 私有地维护。
+		当调用 intern 方法时，如果池已经包含一个等于此 String 对象的字符串
+		（该对象由 equals(Object) 方法确定），则返回池中的字符串。否则，
+		将此 String 对象添加到池中，并且返回此 String 对象的引用。它遵循对于任何两个
+		字符串 s 和 t，当且仅当 s.equals(t) 为 true 时，s.intern() == t.intern()
+		才为 true。所有字面值字符串和字符串赋值常量表达式都是内部的。
+		返回：
+			一个字符串，内容与此字符串相同，但它保证来自字符串池中。
+	
+	3、String replace(char oldChar, char newChar)
+		输入："012.34567.89".replace('.', 'a')
+		输出：012a34567a89。
+		*：会替换所有匹配的字符
+	
+	4、String replaceAll(String regex, String replacement)
+		输入："012.34567.89".replaceAll(".", 'a')
+		输出：aaaaaaaaaaaa。
+		*:*：第一个参数应该传入正则表达式，如果想用.号做分割符必须进行转义
+		"012.34567.89".replaceAll("\\.", 'a')
+		这样输出012a34567a89。
+	
+	5、String[] split(String regex, int limit)
+		输入：Arrays.toString("012.34567.89".split("."))
+		输出：[]。
+		*：第一个参数应该传入正则表达式，如果想用.号做分割符必须进行转义
+		Arrays.toString("012.34567.89".split("\\."))
+		这样输出[012, 34567, 89]。
+		
+
+	

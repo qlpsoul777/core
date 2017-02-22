@@ -1,0 +1,33 @@
+1、	dao层的函数方法：
+		public User selectUser(String name,String area);
+	mapper.xml:
+		<select id="selectUser" resultMap="BaseResultMap">
+		    select XXX user_name = #{0} and user_area=#{1}
+		</select>
+	#{0}代表接收的是dao层中的第一个参数，#{1}代表dao层中第二参数，更多参数一致往后加即可。
+
+
+2	dao层的函数方法：
+		public User selectUser(Map paramMap);
+	mapper.xml:
+		<select id=" selectUser" resultMap="BaseResultMap">
+		   select  XXX user_name = #{userName，jdbcType=VARCHAR} 
+		   and user_area=#{userArea,jdbcType=VARCHAR}
+		</select>
+	service层的函数方法：
+		private User xxxSelectUser(){
+			Map paramMap=new hashMap();
+			paramMap.put(“userName”,”对应具体的参数值”);
+			paramMap.put(“userArea”,”对应具体的参数值”);
+			User user=xxx. selectUser(paramMap);
+		}
+
+
+3、	dao层的函数方法：
+		public User selectUser(@param(“userName”)Stringname,
+			@param(“userArea”)String area);
+	mapper.xml:
+		<select id=" selectUser" resultMap="BaseResultMap">
+		   select  XXX user_name = #{userName，jdbcType=VARCHAR} 
+		   and user_area=#{userArea,jdbcType=VARCHAR}
+		</select>

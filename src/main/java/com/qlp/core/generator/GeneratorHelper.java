@@ -244,7 +244,7 @@ public class GeneratorHelper {
 	private String getSqlPath(Target target) {
 		StringBuilder sb = new StringBuilder(generator.getSqlPath());
 		sb.append(File.separator);
-		sb.append(target.getName()).append(".xml");
+		sb.append(target.getLowName()).append(".xml");
 		return sb.toString();
 	}
 
