@@ -1,0 +1,56 @@
+1、JSP九大内置對象
+
+    1、request内置对象
+        request内置对象是最常用的对象之一，主要用于客户端请求处理.它代表的是
+        java.servlet.HttpServletRequest类的对象。request内置对象中包含了有关浏览器请求的信息，
+        并提供了多个用于获取cookie、header以及session数据的方法。
+
+    2、response内置对象
+        response对象与request对象相对应，它是用于响应客户请求，向客户端输出信息。response是
+        javax.servlet.HttpServletResponse类的对象。
+
+    3、session内置对象
+        session是与请求有关的会话期，它是java.servlet.http.HttpSession类的对象，用来表示和存储
+        当前页面的请求信息。在实际的Web应用开发过程会经常遇到这样的一个问题：会话状态的维持。
+        当然有很多种方法可以用来解决这个问题，例如：Cookies、隐藏的表单输入域或者将状态信息直接附加
+        到URL当中去，但是这些方法使用非常不便。Java Servlet提供了一个可以在多个请求之间持续有效的
+        会话对象HttpSession，此对象允许用户存储和提取会话状态的信息。JSP同样也支持了Servlet中的
+        这个概念。JSP中的session内置对象就是对应于Servlet中的HttpSession对象。当Web应用系统希
+        望通过多个页面完成一个事务的时候，session的使用是非常有用和方便的。
+
+    4、page内置对象
+        page对象有点类似于Java编程中的this指针，就是指当前JSP页面本身。page是java.lang.Object
+        类的对象。
+
+    5、out内置对象
+        out对象被封装为javax.servlet.jsp.jspWriter接口，通过调用pageContext.getOut()方法
+        可以获取out对象。
+
+    6、config内置对象
+        config内置对象是ServletConfig类的一个实例。在Servlet初始化的时候，JSP引擎通过config向它传递
+        信息。这种信息可以是属性名/值匹配的参数，也可以是通过ServletContext对象传递的服务器的有关信息。
+
+    7、exception内置对象
+        exception对象是java.lang.Throwable实例，代表JSP脚本中产生的错误和异常，是JSP页面机制的一部分。
+        在JSP脚本中无须处理异常，即使该异常是checked异常。在实际JSP网站开发过程中，通常是在其页面中加入
+        page指令的errorPage属性来将其指向一个专门处理异常错误的页面。
+
+    8、application内置对象
+        application是javax.servlet.ServletContext类对象的一个实例，用于实现用户之间的数据共享（多使用
+        于网络聊天系统）。application对象与session对象的区别：
+            一般来说，一个用户对应着一个session，并且随着用户的离开session中的信息也会消失，
+            所以不同客户之间的会话必须要确保某一时刻至少有一个客户没有终止会话；而application则不同，
+            它会一直存在，类似于系统的“全局变量”，而且只有一个实例。
+
+    9、pageContext内置对象
+        pageContext对象是一个比较特殊的对象。它相当于页面中所有其他对象功能的最大集成者，即使用它可以
+        访问到本页面中所有其他对象，例如前面已经描述的request、response以及application对象等。
+        pageContext对象在实际JSP开发过程中很少使用，因为像request和response等对象本来就可以
+        直接调用方法进行使用，如果通过pageContext来调用其他对象就有点舍近求远。
+
+
+2、
+
+3、
+
+4、

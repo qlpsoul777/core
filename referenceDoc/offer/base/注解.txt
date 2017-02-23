@@ -1,0 +1,50 @@
+1、定义：注解（Annotation），也叫元数据。一种代码级别的说明。它是JDK1.5及以后版本引入的一个特性，
+与类、接口、枚举是在同一个层次。它可以声明在包、类、字段、方法、局部变量、方法参数等的前面，
+用来对这些元素进行说明，注释。
+作用分类：
+    ①编写文档：通过代码里标识的元数据生成文档【生成文档doc文档】
+    ②代码分析：通过代码里标识的元数据对代码进行分析【使用反射】
+    ③编译检查：通过代码里标识的元数据让编译器能够实现基本的编译检查【Override】
+
+2、自定义注解
+    1）限制注解的使用范围
+    用@Target指定ElementType属性
+    public enum ElementType {
+        // 用于类，接口，枚举但不能是注解
+        TYPE,
+        // 字段上，包括枚举值
+        FIELD,
+        // 方法，不包括构造方法
+        METHOD,
+        // 方法的参数
+        PARAMETER,
+        // 构造方法
+        CONSTRUCTOR,
+        // 本地变量或catch语句
+        LOCAL_VARIABLE,
+        // 注解类型(无数据)
+        ANNOTATION_TYPE,
+        // Java包
+        PACKAGE
+    }
+
+    2）保持性策略
+    用@Retention指定RetentionPolicy
+    public enum RetentionPolicy {
+        // 此类型会被编译器丢弃
+        SOURCE,
+        // 此类型注解会保留在class文件中，但JVM会忽略它
+        CLASS,
+        // 此类型注解会保留在class文件中，JVM会读取它
+        RUNTIME
+    }
+
+    3）文档化功能
+    @Documented用于描述其它类型的annotation应该被作为被标注的程序成员的公共API，因此可以被例如
+    javadoc此类的工具文档化。Documented是一个标记注解，没有成员。
+
+    4）标注继承
+    @Inherited 元注解是一个标记注解，@Inherited阐述了某个被标注的类型是被继承的。如果一个使用
+    了@Inherited修饰的annotation类型被用于一个class，则这个annotation将被用于该class的子类。
+    注意：@Inherited annotation类型是被标注过的class的子类所继承。类并不从它所实现的接口继承
+    annotation，方法并不从它所重载的方法继承annotation。
