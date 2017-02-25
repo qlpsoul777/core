@@ -76,7 +76,7 @@ public class GeneratorHelper {
 				target.setParentPath(generator.getParentPath());
 				target.setName(name);
 				target.setLowName(StringUtil.firstCharLower(name));
-				target.setTableName(getTableName(generator.getParentPath(),name));
+				target.setTableName(getTableName(generator.getParentPath(),name,appName));
 				target.setClassName(getClassName(rootPath,generator.getParentPath(),name));
 				LogUtil.info(logger, "根据配置的entitys组装待处理Target:{0}",target);
 				list.add(target);
@@ -93,9 +93,10 @@ public class GeneratorHelper {
 		return sb.toString();
 	}
 
-	private String getTableName(String parentPath, String name) {
+	private String getTableName(String parentPath, String name,String appName) {
 		StringBuilder sb = new StringBuilder("T_");
-		sb.append(parentPath.toUpperCase()).append("_")
+		sb.append(appName.toUpperCase()).append("_")
+		.append(parentPath.toUpperCase()).append("_")
 		.append(name.toUpperCase());
 		return sb.toString();
 	}
