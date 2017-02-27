@@ -3,3 +3,6 @@ https://www.oschina.net/code/snippet_1864608_37194
 
 2、offer总结
 http://www.importnew.com/21445.html
+
+3、hash冲突
+http://blog.csdn.net/xtzmm1215/article/details/47177701

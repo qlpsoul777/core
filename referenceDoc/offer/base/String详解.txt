@@ -89,4 +89,17 @@
 		这样输出[012, 34567, 89]。
 		
 
+6、String s = new String("xyz");创建了几个String Object? 二者之间有什么区别？
+	两个或一个，”xyz”对应一个对象，这个对象放在字符串常量池里，”xyz”不管出现多少遍，都是常量池中
+	取。New String每写一遍，就创建一个新的对象，它依据那个常量”xyz”对象的内容来创建出一个新
+	String对象。如果以前就用过’xyz’，这句代表就不会创建”xyz”自己了，直接从常量池拿。
+	
+
+7、如何把一段逗号分割的字符串转换成一个数组?
+	1.直接用String的split方法。
+	2.用StringTokenizer，
+		StringTokenizer  tokener = StringTokenizer(orgStr,”,”)。
+	3.用String的查找字符位置和截取方法进行查找截取实现。
+		
+
 	

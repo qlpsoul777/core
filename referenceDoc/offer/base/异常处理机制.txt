@@ -129,6 +129,26 @@
 			结果：
 				inner result:7
 				main result:6
+				
+			*：当在try块或catch块中遇到return语句，在finally中也有return语句时
+			eg:
+				mainMethod(){
+			        	System.out.println("main result:" + getResult());
+			        }
+			
+			public int  getResult(){
+				try{
+					return 1 ;
+				}
+				finally{
+					return 2 ;
+				}
+			}
+			结果：
+				main result:2
+			return并不是让函数马上返回，而是return语句执行后，将把返回结果放置进函数栈中，
+			此时函数并不是马上返回，它要执行finally语句后才真正开始返回。
+
 
 5、Throwable类中的常用方法？
 	getCause()：返回抛出异常的原因。如果 cause 不存在或未知，则返回 null。
