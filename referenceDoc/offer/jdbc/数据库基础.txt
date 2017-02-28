@@ -11,7 +11,7 @@
 	
 	
 2、用过哪些RDBMS？用过哪些NoSql产品？它们的主要应用场景是什么？
-	RDBMS:oracle、mysql、sqlserver、db2...
+	RDBMS:oracle、mysql、sql server、db2...
 		主要应用场景：
 	NoSql:
 		Redis： 通常被称为数据结构服务器，因为值（value）可以是 字符串(String), 哈希
@@ -93,8 +93,23 @@
 		
 	分页：
 		mysql:
-		
+			select * from user_detail where user_id limit 0,20
+
 		oracle:
+			SELECT * FROM
+			(
+			   SELECT A.*, ROWNUM RN
+			   FROM (SELECT * FROM TABLE_NAME) A
+			   WHERE ROWNUM <= 40
+			)
+			WHERE RN >= 21
+
+			SELECT * FROM
+			(
+			   SELECT A.*, ROWNUM RN
+			   FROM (SELECT * FROM TABLE_NAME) A
+			)
+			WHERE RN BETWEEN 21 AND 40
 		
 	去重：
 	

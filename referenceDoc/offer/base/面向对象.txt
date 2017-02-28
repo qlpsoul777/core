@@ -19,8 +19,77 @@
 	2.通过反射Class.newInstance();用这种方式前提条件是该类要么提供一个空的构造函数，要么
 	不定义任何有参数的构造函数。
 	3.通过调用clone方法，克隆一个对象，用这种方式的前提条件是该类必须继承Cloneable接口
-		浅克隆：
-		深克隆：
+		浅克隆：对于要克隆的对象，对于其基本数据类型的属性，复制一份给新产生的对象，对于非基本数据类型的属性，
+				仅仅复制一份引用给新产生的对象，即新产生的对象和原始对象中的非基本数据类型的属性都指向的是
+				同一个对象。
+            a、实现java.lang.Cloneable接口
+            b、重写java.lang.Object.clone()方法
+            JDK API的说明文档解释这个方法将返回Object对象的一个拷贝。要说明的有两点：一是拷贝对象返回的是一个
+            新对象，而不是一个引用。二是拷贝对象与用new操作符返回的新对象的区别就是这个拷贝已经包含了一些原来
+            对象的信息，而不是对象的初始信息。观察一下Object类的clone()方法是一个native方法，native方法的
+            效率一般来说都是远高于java中的非native方法。这也解释了为什么要用Object中clone()方法而不是
+            先new一个类，然后把原始对象中的信息赋到新对象中，虽然这也实现了clone功能。Object类中的clone()
+            还是一个protected属性的方法，重写之后要把clone()方法的属性设置为public。
+            Object类中clone()方法产生的效果是：先在内存中开辟一块和原始对象一样的空间，然后原样拷贝原始
+            对象中的内容。对基本数据类型，这样的操作是没有问题的，但对非基本类型变量，我们知道它们保存的
+            仅仅是对象的引用，这也导致clone后的非基本类型变量和原始对象中相应的变量指向的是同一个对象。
+
+            @Override
+			public SimpleClone clone(){
+				SimpleClone simpleClone = null;
+				try {
+					simpleClone = (SimpleClone) super.clone();
+				} catch (CloneNotSupportedException e) {
+					e.printStackTrace();
+				}
+				return simpleClone;
+			}
+
+
+		深克隆：	在浅度克隆的基础上，对于要克隆的对象中的非基本数据类型的属性对应的类，也实现克隆，这样对于
+				非基本数据类型的属性，复制的不是一份引用，即新产生的对象和原始对象中的非基本数据类型的属性指向的不
+				是同一个对象
+				A在浅克隆基础上修改clone方法
+					a、实现java.lang.Cloneable接口
+					b、重写java.lang.Object.clone()方法
+				B使用对象序列化和反序列化实现深度克隆
+
+				@Override
+				public DeepClone clone(){
+					DeepClone deepClone = null;
+					try {
+						deepClone = (DeepClone) super.clone();
+					} catch (CloneNotSupportedException e) {
+						e.printStackTrace();
+					}
+					deepClone.card = (Card)card.clone();
+					return deepClone;
+				}
+
+			public DeepClone clone1(){
+				DeepClone deepClone = null;
+				ByteArrayOutputStream bos = new ByteArrayOutputStream();
+				ObjectOutputStream oos;
+				try {
+					oos = new ObjectOutputStream(bos);
+					oos.writeObject(this);
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+				//从流里读回来
+				ByteArrayInputStream bis = new ByteArrayInputStream(bos.toByteArray());
+				ObjectInputStream ois;
+				try {
+					ois = new ObjectInputStream(bis);
+					deepClone = (DeepClone) ois.readObject();
+				} catch (IOException e) {
+					e.printStackTrace();
+				} catch (ClassNotFoundException e) {
+					e.printStackTrace();
+				}
+				return deepClone;
+			}
+
 
 
 3、java中实现多态的机制是什么？
@@ -78,14 +147,14 @@
 				对于任何非空引用值 x，x.equals(null) 都应返回 false。
 		
 		hashCode()：
-			返回该对象的哈希码值。支持此方法是为了提高哈希表（例如 java.util.Hashtable 
+			返回该对象的哈希码值。支持此方法是为了提高哈希表（例如 java.util.HashTable
 			提供的哈希表）的性能。
 			
-		Java对象的eqauls方法和hashCode方法是这样规定的：
-			1.如果两个对象相同(eqauls相等)，那么它们的hashCode值一定要相同。
-			2.如果两个对象的hashCode相同，它们eqauls并不一定相同。也就是说，
+		Java对象的equals方法和hashCode方法是这样规定的：
+			1.如果两个对象相同(equals相等)，那么它们的hashCode值一定要相同。
+			2.如果两个对象的hashCode相同，它们equals并不一定相同。也就是说，
 			不同对象的hashCode可能相同；假如两个Java对象A和B，A和B不相等
-			（eqauls结果为false），但A和B的哈希码相等，将A和B都存入HashMap时
+			（equals结果为false），但A和B的哈希码相等，将A和B都存入HashMap时
 			会发生哈希冲突，也就是A和B存放在HashMap内部数组的位置索引相同这时HashMap会
 			在该位置建立一个链接表，将A和B串起来放在该位置，显然，该情况不违反HashMap的
 			使用原则，是允许的。当然，哈希冲突越少越好，尽量采用好的哈希算法以避免哈希冲突。

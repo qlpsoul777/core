@@ -1,0 +1,80 @@
+1、1、hibernate工作原理
+  	a.通过Configuration config = new Configuration().configure();//读取并解析hibernate.cfg.xml配置文件
+  	b.由hibernate.cfg.xml中的<mapping resource="com/xx/User.hbm.xml"/>读取并解析映射信息
+  	c.通过SessionFactory sf = config.buildSessionFactory();//创建SessionFactory
+  	d.Session session = sf.openSession();//打开session
+  	e.Transaction tx = session.beginTransaction();//创建并启动事务Transaction
+  	f.persistent operate操作数据，持久化操作
+  	g.tx.commit();//提交事务
+  	h.关闭Session
+  	i.关闭SessionFactory
+
+  2、hibernate核心接口
+  	session：负责被持久化对象CRUD操作
+  	sessionFactory:负责初始化hibernate，创建session对象
+  	configuration:负责配置并启动hibernate，创建SessionFactory
+  	Transaction:负责事物相关的操作
+  	Query和Criteria接口：负责执行各种数据库查询
+
+  3、为什么要用hibernate
+  	hibernate是轻量级的对象关系映射框架，对JDBC访问数据库的代码做了封装，大大简化了数据访问层繁琐的重复性代码。
+
+  4、说下hibernate的缓存机制
+  	A、hibernate是一个持久层框架，经常访问物理数据库，为了降低应用程序对物理数据源访问的频次，从而提高应用程序
+  	的运行性能。缓存内的数据是对物理数据源中的数据的复制，应用程序在运行时从缓存读写数据，在特定的时刻或事件会
+  	同步缓存和物理数据源的数据
+
+  	B、hibernate缓存包括两大类：hibernate一级缓存和hibernate二级缓存
+  		a、一级缓存又称为“Session的缓存”。Session内置不能被卸载，Session的缓存是事务范围的缓存（
+  		Session对象的生命周期通常对应一个数据库事务或者一个应用事务）。一级缓存中，持久化类的每个实例都具有
+  		唯一的OID。
+  		b、二级缓存又称为“SessionFactory的缓存”。由于SessionFactory对象的生命周期和应用程序的整个过程对应，
+  		因此Hibernate二级缓存是进程范围或者集群范围的缓存，有可能出现并发问题，因此需要采用适当的并发访问策略，
+  		该策略为被缓存的数据提供了事务隔离级别。第二级缓存是可选的，是一个可配置的插件，默认下SessionFactory
+  		不会启用这个插件。Hibernate提供了org.hibernate.cache.CacheProvider接口,它充当缓存插件与Hibernate
+  		之间的适配器。
+
+  	C、什么样的数据适合存放到第二级缓存中？ 　　
+  		1) 很少被修改的数据 　　
+  		2) 不是很重要的数据，允许出现偶尔并发的数据 　　
+  		3) 不会被并发访问的数据 　　
+  		4) 常量数据 　　
+  	D、不适合存放到第二级缓存的数据？ 　　
+  		1) 经常被修改的数据 　　
+  		2) 绝对不允许出现并发访问的数据，如财务数据，绝对不允许出现并发 　　
+  		3) 与其他应用共享的数据。
+
+  5、请解释hibernate查询中出现的N+1问题，并提出解决方案。
+  	hibernate在进行关联查询时，当查询完主表数据后会再去查询关联表数据，
+  	解决方案：
+  		a、配置@Fetch(FetchMode.JOIN)预抓取
+  		b、配置fetch=FetchType.LAZY设置为懒加载
+  		c、配置二级缓存，第一次加载所有记录，后面使用缓存，只有在数据改变的时候清空缓存
+
+  6、请解释说明hibernate控制下的对象会呈现三种状态
+  	暂态transient：数据库中没数据。跟session不相关。没存过。
+  	游离态detached：在数据库中有记录，但是在session中没有。需要手工同步。
+  	持久态persistent：数据库中有记录，session中也有这记录。自动更新
+  	同Hibernate的session有关联的对象是persistent对象。对这种对象进行的所有修改都会按照事先设定的刷新策略，
+  	反映到数据库之中，也即，可以在对象的任何一个属性发生改变时自动刷新，也可以通过调用Session.flush()方法
+  	显式地进行刷新。如果一个对象原来同Session有关联关系，但当下却没有关联关系了，这样的对象就是detached的
+  	对象。你可以通过调用任意一个session的update()或者saveOrUpdate()方法，重新将该detached对象同相应的
+  	session建立关联关系。Transient对象指的是新建的持久化类的实例，它还从未同Hibernate的任何Session有过关
+  	联关系。同样的，你可以调用persist()或者save()方法，将transient对象变成persistent对象
+
+  7、hibernate中get和load有什么不同之处?
+  	如果在缓存中没有找到相应的对象，get将会直接访问数据库并返回一个完全初始化好的对象
+  	而load方法在缓存中没有发现对象的情况下，只会返回一个代理对象，只有在对象getId()之外的其它方法被调用时
+  	才会真正去访问数据库，这样就能在某些情况下大幅度提高性能。如果对象不存在 get返回null load抛异常。
+
+
+  8、hibernate中的SessionFactory有什么作用? SessionFactory是线程安全的吗？
+  	SessionFactory就是一个用于创建Hibernate的Session对象的工厂。SessionFactory通常是在应用启动时创建好的，
+  	应用程序中的代码用它来获得Session对象。作为一个单个的数据存储，它也是线程安全的，所以多个线程可同时使用
+  	同一个SessionFactory。SessionFactory的内部状态包含着同对象关系影射有关的所
+  	有元数据，它是不可变的，一旦创建好后就不能对其进行修改了。
+
+  9、hibernate中的Session指的是什么? 可否将单个的Session在多个线程间进行共享？
+  	Session代表着Hibernate所做的一小部分工作，它负责维护者同数据库的链接而且 不是线程安全的，也就是说，
+  	hibernate中的Session不能在多个线程间进行共享。虽然Session会以主动滞后的方式获得数据库连接，
+  	但是Session最好还是在用完之后立即将其关闭。
