@@ -1,0 +1,23 @@
+1、注册jdbc驱动程序的三种方式
+	Class.forName("com.mysql.jdbc.Driver,...");
+	System.setProperty("jdbc.drivers","com.mysql.jdbc.Driver,...");
+	DriverManager.registerDriver(new com.mysql.jdbc.Driver());
+	
+2、JDBC中的PreparedStatement相比Statement的好处？
+	使用Statement时 sql需要拼接字符串，容易出错，而且容易被sql注入，安全性上没有
+	PreparedStatement好，PreparedStatement是预编译，所以在执行效率上也好于Statement。
+	所以在进行jdbc操作时，最好都用PreparedStatement。PreparedStatement可以写动态参数
+	化的查询。
+	*：在设置参数时，注意索引位置是从1开始的，不是0。
+	
+3、为什么要使用数据连接池、它的工作机制是什么？
+	为了解决数据库连接这样的稀缺资源的频繁创建与释放问题，采用数据库连接池技术。数据库连接池的基本
+	思想就是为数据库连接建立一个“缓冲池”。预先在缓冲池中放入一定数量的连接，当需要建立数据库连接时，
+	只需从“缓冲池”中取出一个，使用完毕之后再放回去。我们可以通过设定连接池最大连接数来防止系统
+	无尽的与数据库连接。更为重要的是我们可以通过连接池的管理机制监视数据库的连接的数量、使用情况，
+	为系统开发、测试及性能调整提供依据。
+	
+	J2EE服务器启动时会建立一定数量的池连接，并一直维持不少于此数目的池连接。客户端程序需要连接时，
+	池驱动程序会返回一个未使用的池连接并将其表记为忙。如果当前没有空闲连接，池驱动程序就新建一定数
+	量的连接，新建连接的数量有配置参数决定。当使用的池连接调用完成后，池驱动程序将此连接表记为空闲，
+	其他调用就可以使用这个连接。
