@@ -6,3 +6,5 @@ http://www.importnew.com/21445.html
 
 3、hash冲突
 http://blog.csdn.net/xtzmm1215/article/details/47177701
+
+http://blog.csdn.net/pcceo1/article/details/51245249

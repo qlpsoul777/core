@@ -1,6 +1,31 @@
-1、JSP九大内置對象
+1、servlet生命周期？
+	
 
-    1、request内置对象
+2、servlet是綫程安全的嗎？
+
+3、servlet API中forward() 与redirect()的区别？
+	前者仅是容器中控制权的转向，在客户端浏览器地址栏中不会显示出转向后的地址；后者则是完全的跳转，
+	浏览器将会得到跳转的地址，并重新发送请求链接。这样，从浏览器的地址栏中可以看到跳转后的链接地址。
+	所以，前者更加高效，在前者可以满足需要时，尽量使用forward()方法，并且，这样也有助于隐藏实际
+	的链接。在有些情况下，比如，需要跳转到一个其它服务器上的资源，则必须使用sendRedirect()方法。 
+
+4、request.getAttribute() 和 request.getParameter() 有何区别?
+	request.getParameter()取得是通过容器的实现来取得通过类似post，get等方式传入的数据。
+    request.setAttribute()和getAttribute()只是在web容器内部流转，仅仅是请求处理阶段。
+    getAttribute是返回对象,getParameter返回字符串
+	request.getAttribute()方法返回request范围内存在的对象，
+	而request.getParameter()方法是获取http提交过来的数据。
+	
+5、JSP和Servlet有哪些相同点和不同点，他们之间的联系是什么？
+
+6、项目中是否遇到过乱码问题，该怎么解决乱码问题？
+
+7、简述一下对mvc的认识？
+
+8、JSP中动态include与静态include的区别？
+
+9、说说jsp的内置对象？
+	1、request内置对象
         request内置对象是最常用的对象之一，主要用于客户端请求处理.它代表的是
         java.servlet.HttpServletRequest类的对象。request内置对象中包含了有关浏览器请求的信息，
         并提供了多个用于获取cookie、header以及session数据的方法。
@@ -48,9 +73,7 @@
         pageContext对象在实际JSP开发过程中很少使用，因为像request和response等对象本来就可以
         直接调用方法进行使用，如果通过pageContext来调用其他对象就有点舍近求远。
 
+10、谈谈get和post请求？http还有其他请求方式吗？
 
-2、
+11、谈谈你对session和cookie的理解？
 
-3、
-
-4、

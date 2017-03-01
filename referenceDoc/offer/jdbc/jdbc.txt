@@ -21,3 +21,38 @@
 	池驱动程序会返回一个未使用的池连接并将其表记为忙。如果当前没有空闲连接，池驱动程序就新建一定数
 	量的连接，新建连接的数量有配置参数决定。当使用的池连接调用完成后，池驱动程序将此连接表记为空闲，
 	其他调用就可以使用这个连接。
+	
+	
+4、用jdbc简单写一个批量插入的代码，并加上事物控制？
+		Connection conn = getConnection();
+        String sql = "insert into t_cms_base_site(name,num,status)VALUES(?,?,?)";
+        PreparedStatement ps = null;
+        try {
+            ps = conn.prepareStatement(sql);
+            conn.setAutoCommit(false);
+            for (int i = 0; i < 100000; i++) {
+                ps.setString(1, getRandomStr());
+                ps.setString(2, getRandomStr());
+                ps.setInt(3, 1);
+                ps.addBatch();
+            }
+            ps.executeBatch();
+            conn.commit();
+        } catch (Exception e) {
+            try {
+                conn.rollback();
+            } catch (SQLException e1) {
+                e1.printStackTrace();
+            }
+        } finally {
+            try {
+                ps.close();
+                conn.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+
+5、用过哪些ORM框架，和JDBC有什么关系？
+	mybatis、hibernate、spring data jpa
+
