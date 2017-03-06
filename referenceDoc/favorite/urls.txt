@@ -3,8 +3,12 @@ https://www.oschina.net/code/snippet_1864608_37194
 
 2、offer总结
 http://www.importnew.com/21445.html
+http://www.importnew.com/22083.html
 
 3、hash冲突
 http://blog.csdn.net/xtzmm1215/article/details/47177701
-
+http://www.importnew.com/22488.html
 http://blog.csdn.net/pcceo1/article/details/51245249
+
+4、nio
+http://www.importnew.com/22623.html

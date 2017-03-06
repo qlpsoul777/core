@@ -1,0 +1,91 @@
+1、介绍集合框架的结构？
+	Collection(I)
+		-List(I):允许重复项的有序集合
+			--ArrayList底层数据结构是数组，查询快，增删慢。线程不安全，效率高
+			--LinkedList底层数据结构是链表，查询慢，增删快。 线程不安全，效率高
+			--Vector底层数据结构是数组，查询快，增删慢。 线程安全，效率低
+		-Set(I):无序，不允许重复的集合
+			--HashSet底层数据结构是哈希表。
+			--SortedSet(I)
+				---TreeSet底层数据结构是红黑树。
+	Map(I):键值不能重复的有键-值(key-value)映射关系的集合
+		-HashMap
+		-TreeMap
+		-Hashtable
+		
+2、List、Map、Set三个接口，存取元素时，各有什么特点？
+	首先，List与Set具有相似性，它们都是单列元素的集合，所以，它们有一个共同的父接口，
+	叫Collection。Set是无序的，不允许有重复的元素，无序就是放入元素的先后顺序和存储顺序是
+	不一致的，不重复是说在存入元素时会比较两个元素是否是相同的(调用equals方法)，如果不同就放入set
+	返回true,如果重复就不放入返回false。
+	 List表示可重复有序的集合，这里的有序是指每次增加元素的先后顺序和存储顺序是一致的。
+	 Map与List和Set不同，它是双列的集合，每次存储时，要存储一对key/value，不能存储重复的key，
+	 这个重复的规则也是按equals比较相等。取则可以根据key获得相应的value。
+	 
+3、说出ArrayList,Vector, LinkedList的存储性能和特性？
+	ArrayList和Vector都是使用数组方式存储数据，此数组元素数大于实际存储的数据以便增加和插入元素
+	，它们都允许直接按序号索引元素，但是插入、删除元素要涉及数组元素移动等内存操作，所以索引数据快而增
+	删数据慢，Vector由于使用了synchronized方法（线程安全），通常性能上较ArrayList差，而
+	LinkedList使用双向链表实现存储，按序号索引数据需要进行前向或后向遍历，但是插入数据时只需要
+	记录本项的前后项即可，不涉及元素移动，所以插入速度较快。LinkedList也是线程不安全的，
+	LinkedList提供了一些方法，使得LinkedList可以被当作堆栈和队列来使用。
+	
+4、Collection 和 Collections的区别？ 
+　　	Collection是集合类的上级接口，继承与他的接口主要有Set 和List. 
+	Collections是针对集合类的一个帮助类，他提供一系列静态方法实现对各种集合的搜索、排序、线程安全
+	化等操作。 
+
+5、说出HashMap,TreeMap, Hashtable、LinkedHashMap的存储性能和特性？
+	HashMap 是一个最常用的Map,它根据键的HashCode 值存储数据,根据键可以直接获取它的值，具有
+	很快的访问速度，遍历时，取得数据的顺序是完全随机的。HashMap最多只允许一条记录的键为Null;
+	允 许多条记录的值为 Null;HashMap不支持线程的同步，即任一时刻可以有多个线程同时写HashMap;
+	可能会导致数据的不一致。如果需要同步，可以用 Collections的synchronizedMap方法使
+	HashMap具有同步的能力，或者使用ConcurrentHashMap。
+	
+	Hashtable与 HashMap类似,它继承自Dictionary类，不同的是:它不允许记录的键或者值为空;
+	它支持线程的同步，即任一时刻只有一个线程能写Hashtable,因此也导致了 Hashtable在写入时
+	会比较慢。
+	
+	TreeMap实现SortMap接口，能够把它保存的记录根据键排序,默认是按键值的升序排序，也可以指定排序
+	的比较器，当用Iterator 遍历TreeMap时，得到的记录是排过序的。
+	
+	LinkedHashMap保存了记录的插入顺序，在用Iterator遍历LinkedHashMap时，先得到的记录肯定
+	是先插入的.也可以 在构造时用带参数，按照应用次数排序。在遍历的时候会比HashMap慢，不过有种情况
+	例外，当HashMap容量很大，实际数据较少时，遍历起来可能会 比LinkedHashMap慢，因为
+	LinkedHashMap的遍历速度只和实际数据有关，和容量无关，而HashMap的遍历速度和他的容量有关。
+	
+	一般情况下，我们用的最多的是HashMap,HashMap里面存入的键值对在取出的时候是随机的,它根据键的
+	HashCode值存储数据,根据键可以直接获取它的值，具有很快的访问速度。在Map 中插入、删除和定位
+	元素，HashMap 是最好的选择。TreeMap取出来的是排序后的键值对。但如果您要按自然顺序或自定义
+	顺序遍历键，那么TreeMap会更好。LinkedHashMap 是HashMap的一个子类，如果需要输出的顺序
+	和输入的相同,那么用LinkedHashMap可以实现,它还可以按读取顺序来排列，像连接池中可以应 用。
+
+6、说出HashSet,TreeSet的存储性能和特性？
+	HashSet实现Set 接口，由哈希表（实际上是一个 HashMap 实例）支持。它不保证集合的迭代顺序；
+	特别是它不保证该顺序恒久不变。此类允许使用 null 元素；HashSet的实现是不同步的。如果多个线程
+	同时访问一个集合，而其中至少一个线程修改了该集合，那么它必须 保持外部同步。
+	
+	TreeSet类实现 Set 接口，该接口由 TreeMap 实例支持。此类保证排序后的 set 按照升序排列元素，
+	根据使用的构造方法不同，可能会按照元素的自然顺序 进行排序，或按照在创建 set 时所提供的比较器进行
+	排序。是一个有序集合,元素中安升序排序,缺省是按照自然顺序进行排序,意味着TreeSet中元素要实现
+	Comparable接口;我们可以构造TreeSet对象时,传递实现了Comparator接口的比较器对象.
+	
+	HashSet是基于Hash算法实现的,其性能通常优于TreeSet,我们通常都应该使用HashSet,在我们需要
+	排序的功能时,我门才使用TreeSet
+	
+7、TreeMap和TreeSet在排序时如何比较元素？Collections工具类中的sort()方法如何比较元素？
+	TreeSet要求存放的对象所属的类必须实现Comparable接口，该接口提供了比较元素的compareTo()
+	方法，当插入元素时会回调该方法比较元素的大小。TreeMap要求存放的键值对映射的键必须实现
+	Comparable接口从而根据键对元素进行排序。Collections工具类的sort方法有两种重载的形式，
+	第一种要求传入的待排序容器中存放的对象比较实现Comparable接口以实现元素的比较；第二种不强制性
+	的要求容器中的元素必须可比较，但是要求传入第二个参数，参数是Comparator接口的子类型（需要重
+	写compare方法实现元素的比较），相当于一个临时定义的排序规则，其实就是通过接口注入比较元素大
+	小的算法，也是对回调模式的应用（Java中对函数式编程的支持）
+	
+8、你认为jdk中对集合的设计有哪些缺陷？
+	遗留容器中的Properties类和Stack类在设计上有严重的问题，Properties是一个键和值都是字符串
+	的特殊的键值对映射，在设计上应该是关联一个Hashtable并将其两个泛型参数设置为String类型，
+	但是Java API中的Properties直接继承了Hashtable，这很明显是对继承的滥用。这里复用代码的方
+	式应该是Has-A关系而不是Is-A关系，另一方面容器都属于工具类，继承工具类本身就是一个错误的做法，
+	使用工具类最好的方式是Has-A关系（关联）或Use-A关系（依赖）。同理，Stack类继承Vector也是
+	不正确的。
