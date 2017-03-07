@@ -12,3 +12,9 @@ http://blog.csdn.net/pcceo1/article/details/51245249
 
 4、nio
 http://www.importnew.com/22623.html
+http://www.cnblogs.com/dolphin0520/p/3919162.html
+
+5、内存模型
+http://blog.csdn.net/qq_35101189/article/details/60740607
+
+http://www.importnew.com/23742.html

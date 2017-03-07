@@ -96,6 +96,19 @@
 			<scope>provided</scope>
 		</dependency>
 		<!-- mybatis end -->
+		
+		<!-- hibernate start -->
+			<dependency>
+				<groupId>org.hibernate</groupId>
+				<artifactId>hibernate-core</artifactId>
+				<version>${hibernate.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.hibernate</groupId>
+				<artifactId>hibernate-entitymanager</artifactId>
+				<version>${hibernate.version}</version>
+			</dependency>
+			<!-- hibernate end -->
 
 		<!-- servlet start -->
 		<dependency>
@@ -155,6 +168,12 @@
 		    <version>${spring-session.version}</version>
 		</dependency>
 		<!-- session end -->
+		
+		<dependency>
+			<groupId>org.springframework.data</groupId>
+			<artifactId>spring-data-jpa</artifactId>
+			<version>${jpa.version}</version>
+		</dependency>
 		
 		<dependency>
             <groupId>org.apache.shiro</groupId>
