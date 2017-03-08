@@ -1,3 +1,17 @@
-1、
+1、Spring MVC的工作原理是怎样的？
+	① 客户端的所有请求都交给前端控制器DispatcherServlet来处理，它会负责调用系统的其他
+	模块来真正处理用户的请求。
+	② DispatcherServlet收到请求后，将根据请求的信息（包括URL、HTTP协议方法、请求
+	头、请求参数、Cookie等）以及HandlerMapping的配置找到处理该请求的Handler
+	（任何一个对象都可以作为请求的Handler）。
+	③在这个地方Spring会通过HandlerAdapter对该处理器进行封装。
+	④ HandlerAdapter是一个适配器，它用统一的接口对各种Handler中的方法进行调用。
+	⑤ Handler完成对用户请求的处理后，会返回一个ModelAndView对象给
+	DispatcherServlet，ModelAndView顾名思义，包含了数据模型以及相应的视图的信息。
+	⑥ ModelAndView的视图是逻辑视图，DispatcherServlet还要借助ViewResolver完
+	成从逻辑视图到真实视图对象的解析工作。
+	⑦ 当得到真正的视图对象后，DispatcherServlet会利用视图对象对模型数据进行渲染。
+	⑧ 客户端得到响应，可能是一个普通的HTML页面，也可以是XML或JSON字符串，还可以是一张
+	图片或者一个PDF文件。
 
 2、

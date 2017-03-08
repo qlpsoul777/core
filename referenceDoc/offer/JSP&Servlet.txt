@@ -1,7 +1,58 @@
 1、servlet生命周期？
+	Servlet 生命周期：Servlet 加载--->实例化--->服务--->销毁。
+	
+	在默认情况下Servlet实例是在第一个请求到来的时候创建，以后复用。如果有的Servlet需要复杂的操作
+	需要载初始化时完成，比如打开文件、初始化网络连接等，可以通知服务器在启动的时候创建该Servlet的
+	实例。具体配置如下：
+    <servlet>
+      <servlet-name>XXServlet</servlet-name>
+      <servlet-class>com..XXServlet</servlet-class>
+      <load-on-startup>1</load-on-startup>
+    </servlet>
+	
+	init（）：在Servlet的生命周期中，仅执行一次init()方法。一旦Servlet实例被创建，
+	Web服务器会自动调用init(ServletConfig config)方法来初始化该Servlet。
+	其中方法参数config中包含了Servlet的配置信息，比如初始化参数，该对象由服务器创建。
+	
+    service（）：它是Servlet的核心，负责响应客户的请求。每当一个客户请求一个
+    HttpServlet对象，该对象的Service()方法就要调用，而且传递给这个方法一个
+    “请求”（ServletRequest）对象和一个“响应”（ServletResponse）对象作
+	为参数。然后根据请求的方式确定调用doGet还是doPost方法
+	
+    destroy（）： 仅执行一次，当Web服务器认为Servlet实例没有存在的必要了，比如应用重新装载，
+	或服务器关闭，以及Servlet很长时间都没有被访问过。服务器可以从内存中销毁（也叫卸载）该实例。
+	Web服务器必须保证在卸载Servlet实例之前调用该实例的destroy()方法，以便回收Servlet申请
+	的资源或进行其它的重要的处理。Web服务器必须保证调用destroy()方法之前，让所有正在运行在
+	该实例的service()方法中的线程退出或者等待这些线程一段时间。一旦destroy()方法已经执行，
+	Web服务器将拒绝所有的新到来的对该Servlet实例的请求，destroy()方法退出，该Servlet
+	实例即可以被垃圾回收。
 	
 
 2、servlet是綫程安全的嗎？
+	1) 当Server Thread线程执行Servlet实例的init()方法时，所有的Client Service Thread
+	线程都不能执行该实例的service()方法，更没有线程能够执行该实例的destroy()方法，因此Servlet
+	的init()方法是工作在单线程的环境下，开发者不必考虑任何线程安全的问题。
+	
+	2) 当服务器接收到来自客户端的多个请求时，服务器会在单独的Client Service Thread线程中执行
+	Servlet实例的service()方法服务于每个客户端。此时会有多个线程同时执行同一个Servlet实例的
+	service()方法，因此必须考虑线程安全的问题。
+	
+	3) 请大家注意，虽然service()方法运行在多线程的环境下，并不一定要同步该方法。而是要看这个方法在执
+	行过程中访问的资源类型及对资源的访问方式。分析如下：
+		i. 如果service()方法没有访问Servlet的成员变量也没有访问全局的资源比如静态变量、文件、
+		数据库连接等，而是只使用了当前线程自己的资源，比如非指向全局资源的临时变量、request
+		和response对象等。该方法本身就是线程安全的，不必进行任何的同步控制。
+		
+		ii. 如果service()方法访问了Servlet的成员变量，但是对该变量的操作是只读操作，
+		该方法本身就是线程安全的，不必进行任何的同步控制。
+		
+		iii. 如果service()方法访问了Servlet的成员变量，并且对该变量的操作既有读又有写，
+		通常需要加上同步控制语句。
+		
+		iv. 如果service()方法访问了全局的静态变量，如果同一时刻系统中也可能有其它线程访问该
+		静态变量，如果既有读也有写的操作，通常需要加上同步控制语句。
+		
+		v. 如果service()方法访问了全局的资源，比如文件、数据库连接等，通常需要加上同步控制语句。
 
 3、servlet API中forward() 与redirect()的区别？
 	前者仅是容器中控制权的转向，在客户端浏览器地址栏中不会显示出转向后的地址；后者则是完全的跳转，
@@ -17,17 +68,35 @@
 	而request.getParameter()方法是获取http提交过来的数据。
 	
 5、JSP和Servlet有哪些相同点和不同点，他们之间的联系是什么？
+	1.jsp经编译后就变成了Servlet.(JSP的本质就是Servlet，JVM只能识别java的类，
+	不能识别JSP的代码,Web容器将JSP的代码编译成JVM能够识别的java类)
+	2.jsp更擅长表现于页面显示,servlet更擅长于逻辑控制.
+	3.Servlet中没有内置对象，Jsp中的内置对象都是必须通过HttpServletRequest
+	对象，HttpServletResponse对象以及HttpServlet对象得到.Jsp是Servlet的
+	一种简化，使用Jsp只需要完成程序员需要输出到客户端的内容，Jsp中的Java脚本如何镶
+	嵌到一个类中，由Jsp容器完成。而Servlet则是个完整的Java类，这个类的Service方法
+	用于生成对客户端的响应。
 
 6、项目中是否遇到过乱码问题，该怎么解决乱码问题？
 	遇到过，出现乱码问题，主要原因就是编码方式不一致导致的，一般分为内部因素和外部因素，内部因素是因为
 	在开发阶段没有统一编码方式、没有注意各个应用统一编码，如数据库的编码方式和代码的编码方式不一致，解
 	决内部因素引起的乱码最好是项目内部统一编码方式。外部问题就是在服务调用双方采用了不一致的编码，解决
 	外部问题可以在项目中通过过滤器的方式拦截所有的编码方式、代码方式强转数据编码方式来处理。
+	指定网页的编码；
+	配置web server对uri使用request里配置的编码；
+	在ajax请求里先encodeURI()；
+	在web server端对request设置utf-8编码，对于response设置utf-8编码。
+	
 	
 
 7、简述一下对mvc的认识？
 
 8、JSP中动态include与静态include的区别？
+	动态INCLUDE用jsp:include动作实现 <jsp:include page="included.jsp" flush="true">
+	它总是会检查所含文件中的变化，适合用于包含动态页面，并且可以带参数。
+	 静态INCLUDE用include伪码实现<% @ include file="include.html" %>,它不会检查所含文件
+	 的变化，适用于包含静态页面静态include主要是对静态页面的引入，不会检查所包含文件的变化
+
 
 9、说说jsp的内置对象？
 	1、request内置对象
@@ -40,13 +109,13 @@
         javax.servlet.HttpServletResponse类的对象。
 
     3、session内置对象
-        session是与请求有关的会话期，它是java.servlet.http.HttpSession类的对象，用来表示和存储
-        当前页面的请求信息。在实际的Web应用开发过程会经常遇到这样的一个问题：会话状态的维持。
-        当然有很多种方法可以用来解决这个问题，例如：Cookies、隐藏的表单输入域或者将状态信息直接附加
-        到URL当中去，但是这些方法使用非常不便。Java Servlet提供了一个可以在多个请求之间持续有效的
-        会话对象HttpSession，此对象允许用户存储和提取会话状态的信息。JSP同样也支持了Servlet中的
-        这个概念。JSP中的session内置对象就是对应于Servlet中的HttpSession对象。当Web应用系统希
-        望通过多个页面完成一个事务的时候，session的使用是非常有用和方便的。
+       session是与请求有关的会话期，它是java.servlet.http.HttpSession类的对象，用来表示和存储
+	        当前页面的请求信息。在实际的Web应用开发过程会经常遇到这样的一个问题：会话状态的维持。
+	        当然有很多种方法可以用来解决这个问题，例如：Cookies、隐藏的表单输入域或者将状态信息直接附加
+	        到URL当中去，但是这些方法使用非常不便。Java Servlet提供了一个可以在多个请求之间持续有效的
+	        会话对象HttpSession，此对象允许用户存储和提取会话状态的信息。JSP同样也支持了Servlet中的
+	        这个概念。JSP中的session内置对象就是对应于Servlet中的HttpSession对象。当Web应用系统希
+	        望通过多个页面完成一个事务的时候，session的使用是非常有用和方便的。
 
     4、page内置对象
         page对象有点类似于Java编程中的this指针，就是指当前JSP页面本身。page是java.lang.Object
@@ -79,6 +148,13 @@
         直接调用方法进行使用，如果通过pageContext来调用其他对象就有点舍近求远。
 
 10、谈谈get和post请求？http还有其他请求方式吗？
+	Get 方法通过 URL 请求来传递用户的数据，将表单内各字段名称与其内容，以成对的字符串
+	连接，置于 action 属性所指程序的 url 后Post 方法通过 HTTP post 机制，将表单内各
+	字段名称与其内容放置在 HTML 表头(header)内一起传送给服务器端交由 action 属性能
+	所指的程序处理。
+	Get 方式传输的数据量非常小，只能传文本。一般限制在 2 KB 左右，但是执行效率却比
+	Post 方法好；而 Post 方式传递的数据量相对较大，可以传送大的文本和二进制数据，如文件
+	Get 方式提交数据，会带来安全问题
 
 11、谈谈你对session和cookie的理解？
 
