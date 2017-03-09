@@ -109,3 +109,15 @@
 		- void set(T value)：设置当前线程的线程局部变量的值。
 		- T get()：获得当前线程所对应的线程局部变量的值。
 		- void remove()：删除当前线程中线程局部变量的值。
+		
+11、如何实现同步？
+	①使用synchronized同步方法、代码块。
+	②wait与notify
+	③使用特殊域变量(volatile)实现线程同步
+	④使用重入锁实现线程同步ReenreantLock
+	⑤使用局部变量实现线程同步ThreadLocal
+	⑥使用java.util.concurrent下的工具
+	⑦使用原子变量实现线程同步AtomicXXX
+	
+	
+	

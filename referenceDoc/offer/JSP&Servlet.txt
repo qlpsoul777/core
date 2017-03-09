@@ -13,6 +13,8 @@
 	init（）：在Servlet的生命周期中，仅执行一次init()方法。一旦Servlet实例被创建，
 	Web服务器会自动调用init(ServletConfig config)方法来初始化该Servlet。
 	其中方法参数config中包含了Servlet的配置信息，比如初始化参数，该对象由服务器创建。
+	初始化时机由load-on-startup决定，如果未配置或者值小于0，当客户端第一次请求时执行，
+	如果值大于等于0，则在servlet容器启动的时候执行。
 	
     service（）：它是Servlet的核心，负责响应客户的请求。每当一个客户请求一个
     HttpServlet对象，该对象的Service()方法就要调用，而且传递给这个方法一个
