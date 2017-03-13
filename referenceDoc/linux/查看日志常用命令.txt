@@ -1,0 +1,2 @@
+1、找到关键行号cat -n XX.log |grep "关键字" |more
+2、显示行号附近的行cat -n XX.log|tail -n +关键行号|head -n 显示多少行
